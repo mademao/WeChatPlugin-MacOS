@@ -22,8 +22,8 @@
 
 + (void)hookWeChat {
     //      微信撤回消息
-    SEL revokeMsgMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFToNameFavChatZZ:) : @selector(onRevokeMsg:);
-    tk_hookMethod(objc_getClass("MessageService"), revokeMsgMethod, [self class], @selector(hook_onRevokeMsg:));
+    SEL revokeMsgMethod = @selector(FFToNameFavChatZZ:sessionMsgList:);
+    tk_hookMethod(objc_getClass("MessageService"), revokeMsgMethod, [self class], @selector(hook_FFToNameFavChatZZ:sessionMsgList:));
     //      微信消息同步
     SEL syncBatchAddMsgsMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFImgToOnFavInfoInfoVCZZ:isFirstSync:) : @selector(OnSyncBatchAddMsgs:isFirstSync:);
     tk_hookMethod(objc_getClass("MessageService"), syncBatchAddMsgsMethod, [self class], @selector(hook_OnSyncBatchAddMsgs:isFirstSync:));
@@ -135,9 +135,9 @@
  hook 微信撤回消息
  
  */
-- (void)hook_onRevokeMsg:(id)msgData {
+- (void)hook_FFToNameFavChatZZ:(id)msgData sessionMsgList:(id)msgList {
     if (![[TKWeChatPluginConfig sharedConfig] preventRevokeEnable]) {
-        [self hook_onRevokeMsg:msgData];
+        [self hook_FFToNameFavChatZZ:msgData sessionMsgList:msgList];
         return;
     }
     id msg = msgData;
@@ -169,7 +169,7 @@
         MessageService *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
         MessageData *revokeMsgData = [msgService GetMsgData:session svrId:[newmsgid integerValue]];
         if ([revokeMsgData isSendFromSelf] && ![[TKWeChatPluginConfig sharedConfig] preventSelfRevokeEnable]) {
-            [self hook_onRevokeMsg:msgData];
+            [self hook_FFToNameFavChatZZ:msgData sessionMsgList:msgList];
             return;
         }
         NSString *msgContent = [[TKMessageManager shareManager] getMessageContentWithData:revokeMsgData];
