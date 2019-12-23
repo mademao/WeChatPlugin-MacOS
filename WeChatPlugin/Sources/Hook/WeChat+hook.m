@@ -168,7 +168,7 @@
         //      获取原始的撤回提示消息
         MessageService *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
         MessageData *revokeMsgData = [msgService GetMsgData:session svrId:[newmsgid integerValue]];
-        if ([revokeMsgData isSendFromSelf] && ![[TKWeChatPluginConfig sharedConfig] preventSelfRevokeEnable]) {
+        if ([revokeMsgData isSendFromSelf]) {
             [self hook_FFToNameFavChatZZ:msgData sessionMsgList:msgList];
             return;
         }

@@ -48,8 +48,8 @@ FOUNDATION_EXPORT const unsigned char WeChatPluginVersionString[];
 @end
 
 @interface MessageService : NSObject
-- (void)onRevokeMsg:(id)arg1 sessionMsgList:(id)arg2;
-- (void)FFToNameFavChatZZ:(id)arg1;
+- (void)onRevokeMsg:(id)arg1;
+- (void)FFToNameFavChatZZ:(id)arg1 sessionMsgList:(id)arg2;
 - (void)OnSyncBatchAddMsgs:(NSArray *)arg1 isFirstSync:(BOOL)arg2;
 - (void)FFImgToOnFavInfoInfoVCZZ:(id)arg1 isFirstSync:(BOOL)arg2;
 - (id)SendTextMessage:(id)arg1 toUsrName:(id)arg2 msgText:(id)arg3 atUserList:(id)arg4;
