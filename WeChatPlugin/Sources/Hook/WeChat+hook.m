@@ -367,7 +367,13 @@
     }];
     
     WeChat *wechat = [objc_getClass("WeChat") sharedInstance];
-    [wechat.chatsViewController.tableView reloadData];
+    if ([NSThread isMainThread]) {
+        [wechat.chatsViewController.tableView reloadData];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wechat.chatsViewController.tableView reloadData];
+        });
+    }
 }
 
 
