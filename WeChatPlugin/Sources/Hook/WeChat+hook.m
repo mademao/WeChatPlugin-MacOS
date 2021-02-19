@@ -10,7 +10,6 @@
 #import "WeChatPlugin.h"
 #import "fishhook.h"
 #import "TKIgnoreSessonModel.h"
-#import "TKWebServerManager.h"
 #import "TKMessageManager.h"
 #import "TKAssistantMenuManager.h"
 #import "TKAutoReplyModel.h"
@@ -273,9 +272,6 @@
     [self hook_onAuthOKOfUser:arg1 withSessionKey:arg2 withServerId:arg3 autoAuthKey:arg4 isAutoAuth:arg5];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if ([[TKWeChatPluginConfig sharedConfig] alfredEnable]) {
-            [[TKWebServerManager shareManager] startServer];
-        }
         NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
         NSMenuItem *pluginMenu = mainMenu.itemArray.lastObject;
         pluginMenu.enabled = YES;
@@ -293,10 +289,6 @@
 }
 
 - (void)hook_ManualLogout {
-    if ([[TKWeChatPluginConfig sharedConfig] alfredEnable]) {
-        [[TKWebServerManager shareManager] endServer];
-    }
-    
     NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
     NSMenuItem *pluginMenu = mainMenu.itemArray.lastObject;
     pluginMenu.enabled = NO;

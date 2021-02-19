@@ -14,7 +14,6 @@
 #import "NSMenuItem+Action.h"
 #import "TKDownloadWindowController.h"
 #import "TKAboutWindowController.h"
-#import "TKWebServerManager.h"
 
 static char tkAutoReplyWindowControllerKey;         //  自动回复窗口的关联 key
 static char tkRemoteControlWindowControllerKey;     //  远程控制窗口的关联 key
@@ -318,11 +317,6 @@ static char tkAboutWindowControllerKey;             //  关于窗口的关联 ke
 
 - (void)onEnableaAlfred:(NSMenuItem *)item {
     item.state = !item.state;
-    if (item.state) {
-        [[TKWebServerManager shareManager] startServer];
-    } else {
-        [[TKWebServerManager shareManager] endServer];
-    }
     [[TKWeChatPluginConfig sharedConfig] setAlfredEnable:item.state];
 }
 
