@@ -22,10 +22,10 @@
 + (void)hookWeChat {
     //      微信撤回消息
     SEL revokeMsgMethod = @selector(FFToNameFavChatZZ:sessionMsgList:);
-    tk_hookMethod(objc_getClass("MessageService"), revokeMsgMethod, [self class], @selector(hook_FFToNameFavChatZZ:sessionMsgList:));
+    tk_hookMethod(objc_getClass("FFProcessReqsvrZZ"), revokeMsgMethod, [self class], @selector(hook_FFToNameFavChatZZ:sessionMsgList:));
     //      微信消息同步
     SEL syncBatchAddMsgsMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFImgToOnFavInfoInfoVCZZ:isFirstSync:) : @selector(OnSyncBatchAddMsgs:isFirstSync:);
-    tk_hookMethod(objc_getClass("MessageService"), syncBatchAddMsgsMethod, [self class], @selector(hook_OnSyncBatchAddMsgs:isFirstSync:));
+    tk_hookMethod(objc_getClass("FFProcessReqsvrZZ"), syncBatchAddMsgsMethod, [self class], @selector(hook_OnSyncBatchAddMsgs:isFirstSync:));
     //      微信多开
     SEL hasWechatInstanceMethod = LargerOrEqualVersion(@"2.3.22") ? @selector(FFSvrChatInfoMsgWithImgZZ) : @selector(HasWechatInstance);
     tk_hookClassMethod(objc_getClass("CUtility"), hasWechatInstanceMethod, [self class], @selector(hook_HasWechatInstance));
@@ -165,7 +165,7 @@
         [revokeMsgSet addObject:newmsgid];
         
         //      获取原始的撤回提示消息
-        MessageService *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
+        FFProcessReqsvrZZ *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("FFProcessReqsvrZZ")];
         MessageData *revokeMsgData = [msgService GetMsgData:session svrId:[newmsgid integerValue]];
         if ([revokeMsgData isSendFromSelf]) {
             [self hook_FFToNameFavChatZZ:msgData sessionMsgList:msgList];
@@ -237,7 +237,7 @@
 //        NSString *instanceUserName = [objc_getClass("CUtility") GetCurrentUserName];
 //        NSString *currentUserName = notification.userInfo[@"currnetName"];
 //        if ([instanceUserName isEqualToString:currentUserName]) {
-//            MessageService *service = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
+//            FFProcessReqsvrZZ *service = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("FFProcessReqsvrZZ")];
 //            [service SendTextMessage:currentUserName toUsrName:chatName msgText:notification.response.string atUserList:nil];
 //            [[TKMessageManager shareManager] clearUnRead:chatName];
 //        }
@@ -528,7 +528,7 @@
         [TKRemoteControlManager executeRemoteControlCommandWithMsg:addMsg.content.string];
     } else if (addMsg.msgType == 34) {
         //      此为语音消息
-        MessageService *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
+        FFProcessReqsvrZZ *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("FFProcessReqsvrZZ")];
         MessageData *msgData = [msgService GetMsgData:addMsg.fromUserName.string svrId:addMsg.newMsgId];
         long long mesSvrID = msgData.mesSvrID;
         NSString *sessionName = msgData.fromUsrName;

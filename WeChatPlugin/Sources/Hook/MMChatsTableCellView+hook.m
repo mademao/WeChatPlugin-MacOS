@@ -166,7 +166,7 @@
 
 - (void)contextMenuClearEmptySession {
     MMSessionMgr *sessionMgr = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MMSessionMgr")];
-    MessageService *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("MessageService")];
+    FFProcessReqsvrZZ *msgService = [[objc_getClass("MMServiceCenter") defaultCenter] getService:objc_getClass("FFProcessReqsvrZZ")];
     
     NSMutableArray *arrSession = sessionMgr.m_arrSession;
     NSMutableArray *emptyArrSession = [NSMutableArray array];
